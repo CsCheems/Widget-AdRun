@@ -5,29 +5,45 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 
 export default async function handler(req, res) {
-  const { code, state } = req.query;
-
-  if (!code) {
-    return res.status(400).send("No code recibido");
-  }
-
   try {
-    const tokenResponse = await axios.post("https://id.twitch.tv/oauth2/token", null, {
-      params: {
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        code,
-        grant_type: "authorization_code",
-        redirect_uri: REDIRECT_URI,
-      },
-    });
+    const { code, state } = req.query;
+
+    if (!code) {
+      console.error("No se recibió el código OAuth");
+      return res.status(400).send("No code recibido");
+    }
+
+    if (!CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {
+      console.error("Faltan variables de entorno:", { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI });
+      return res.status(500).send("Configuración incorrecta del servidor");
+    }
+
+    console.log("Recibido código OAuth:", code);
+    
+    const tokenResponse = await axios.post(
+      "https://id.twitch.tv/oauth2/token",
+      null,
+      {
+        params: {
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+          code,
+          grant_type: "authorization_code",
+          redirect_uri: REDIRECT_URI,
+        },
+      }
+    );
+
+    console.log("Respuesta token:", tokenResponse.data);
 
     const accessToken = tokenResponse.data.access_token;
 
-    // ✅ Redirección para Vercel
-    res.redirect(302, `/widget/widget.html?token=${accessToken}`);
+    // Redirigir al widget con token
+    res.writeHead(302, { Location: `/widget/widget.html?token=${accessToken}` });
+    res.end();
+
   } catch (error) {
-    console.error("Error obteniendo token:", error.response?.data || error.message);
+    console.error("Error en handler /api/callback:", error.response?.data || error.message || error);
     res.status(500).send("Error obteniendo token");
   }
 }
