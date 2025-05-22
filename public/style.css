@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Cal+Sans&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Open Sans", sans-serif;
+    color: #fff;
+}
+
+body{
+    background-color: #1e1e2f;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    height: 100vh;
+}
+
+#main-container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 40%;
+}
+
+.btn-auth {
+  margin-top: 10px;
+  background-color: #A970FF;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.btn-auth:hover {
+  background-color: #7F3AFF;
+}
+
