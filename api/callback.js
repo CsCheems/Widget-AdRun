@@ -5,7 +5,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 
 export default async function handler(req, res) {
-  const { code, state } = req.query;
+  const { code } = req.query;
 
   if (!code) {
     return res.status(400).send("No code recibido");
@@ -24,8 +24,8 @@ export default async function handler(req, res) {
 
     const accessToken = tokenResponse.data.access_token;
 
-    res.writeHead(302, { Location: `/widget?token=${accessToken}` });
-    res.end();
+    // ✅ Redirección correcta para Vercel
+    res.redirect(302, `/widget?token=${accessToken}`);
   } catch (error) {
     console.error("Error obteniendo token:", error.response?.data || error.message);
     res.status(500).send("Error obteniendo token");
