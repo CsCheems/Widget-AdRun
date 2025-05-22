@@ -5,7 +5,7 @@ const progressBar = document.getElementById("progress-bar");
 
 let countdownInterval = null;
 
-async function obtenerDatos(isTest = false) {
+async function obtenerDatos(isTest = true) {
   if (!token) {
     infoDiv.innerHTML = "<div class='error'>Token no proporcionado.</div>";
     return;
@@ -38,8 +38,6 @@ async function obtenerDatos(isTest = false) {
       infoDiv.innerHTML = `
         <div><span class="label">⏰ Próximo anuncio:</span> ${new Date(ad.next_ad_at).toLocaleTimeString()}</div>
         <div><span class="label">🎬 Duración:</span> ${ad.duration} segundos</div>
-        <div><span class="label">🛡️ Preroll free:</span> ${ad.preroll_free_time} segundos</div>
-        <div><span class="label">😴 Snoozes restantes:</span> ${ad.snooze_count}</div>
       `;
 
       iniciarCuentaRegresiva(secondsUntilAd);
