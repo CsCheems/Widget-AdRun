@@ -8,12 +8,7 @@ body {
 }
 
 #container {
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 16px;
-  border-radius: 12px;
-  opacity: 0.75;
-  max-width: 150px;
-  border-radius: 12px;
+  width: 200px;
 }
 
 #info {
@@ -24,6 +19,9 @@ body {
   text-align: center;
   font-weight: bold;
   display: none;
+  opacity: 0.75;
+  width: 200px;
+  border-radius: 12px;
 }
 
 #progress-container {
