@@ -41,7 +41,7 @@ async function obtenerDatos() {
 }
 
 function iniciarCuentaRegresiva(segundos) {
-  detenerCuentaRegresiva(); // limpia si había otro
+  detenerCuentaRegresiva();
 
   let tiempoRestante = segundos;
   const total = segundos;
