@@ -5,15 +5,29 @@ const progressBar = document.getElementById("progress-bar");
 
 let countdownInterval = null;
 
-async function obtenerDatos() {
+async function obtenerDatos(isTest = false) {
   if (!token) {
     infoDiv.innerHTML = "<div class='error'>Token no proporcionado.</div>";
     return;
   }
 
   try {
-    const res = await fetch(`/api/ads?access_token=${token}`);
-    const data = await res.json();
+    let data;
+
+    if (isTest) {
+      // Datos simulados para test
+      data = {
+        data: [{
+          next_ad_at: new Date(Date.now() + 15000).toISOString(), // anuncio en 15 seg
+          duration: 30,
+          preroll_free_time: 5,
+          snooze_count: 2,
+        }],
+      };
+    } else {
+      const res = await fetch(`/api/ads?access_token=${token}`);
+      data = await res.json();
+    }
 
     const ad = data.data?.[0];
     if (ad && ad.next_ad_at) {
@@ -65,5 +79,8 @@ function detenerCuentaRegresiva() {
   progressBar.style.width = "0%";
 }
 
-obtenerDatos();
-setInterval(obtenerDatos, 30000);
+// Usa el parámetro "test" de la URL para definir si es modo test o no
+const isTest = params.get("test") === "true";
+
+obtenerDatos(isTest);
+setInterval(() => obtenerDatos(isTest), 30000);
