@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
     const accessToken = tokenResponse.data.access_token;
 
-    // ✅ Redirección correcta para Vercel
+    // ✅ Redirección para Vercel
     res.redirect(302, `/widget/widget.html?token=${accessToken}`);
   } catch (error) {
     console.error("Error obteniendo token:", error.response?.data || error.message);
