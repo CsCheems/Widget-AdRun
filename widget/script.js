@@ -66,4 +66,4 @@ function detenerCuentaRegresiva() {
 }
 
 obtenerDatos();
-setInterval(obtenerDatos, 30000); // actualiza cada 30s
+setInterval(obtenerDatos, 30000);

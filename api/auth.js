@@ -1,6 +1,6 @@
 export default function handler(req, res) {
   const CLIENT_ID = process.env.CLIENT_ID;
-  const REDIRECT_URI = process.env.REDIRECT_URI;
+  const REDIRECT_URI = "https://widget-ad-run.vercel.app/api/callback";
   const scope = "channel:read:ads channel:edit:commercial";
   const state = Math.random().toString(36).substring(2, 15);
 
