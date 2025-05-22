@@ -2,10 +2,11 @@ const params = new URLSearchParams(window.location.search);
 const token = params.get("token");
 const infoDiv = document.getElementById("info");
 const progressBar = document.getElementById("progress-bar");
+const progressText = document.getElementById("progress-text");
 
 let countdownInterval = null;
 
-async function obtenerDatos(isTest = true) {
+async function obtenerDatos(isTest = false) {
   if (!token) {
     infoDiv.innerHTML = "<div class='error'>Token no proporcionado.</div>";
     return;
@@ -57,26 +58,29 @@ async function obtenerDatos(isTest = true) {
 function iniciarCuentaRegresiva(segundos) {
   detenerCuentaRegresiva();
 
-  let tiempoRestante = segundos;
-  const total = segundos;
+  // Oculta el texto y muestra la barra
+  progressText.style.display = "none";
+  progressBar.style.display = "block";
+  progressBar.style.width = "100%";
+  progressBar.style.transformOrigin = "left center";
 
-  function actualizarBarra() {
-    const porcentaje = Math.max(0, ((total - tiempoRestante) / total) * 100);
-    progressBar.style.width = `${porcentaje}%`;
-    tiempoRestante--;
-
-    if (tiempoRestante < 0) {
-      detenerCuentaRegresiva();
-    }
-  }
-
-  actualizarBarra();
-  countdownInterval = setInterval(actualizarBarra, 1000);
+  // Usa GSAP para animar la barra desde 100% a 0 en "segundos"
+  gsap.fromTo(progressBar, 
+    { scaleX: 1 }, 
+    { duration: segundos, scaleX: 0, ease: "linear" }
+  );
 }
 
 function detenerCuentaRegresiva() {
   clearInterval(countdownInterval);
-  progressBar.style.width = "0%";
+
+  // Para la animación GSAP
+  gsap.killTweensOf(progressBar);
+  
+  // Oculta la barra y muestra el texto
+  progressBar.style.display = "none";
+  progressBar.style.transform = "scaleX(1)";
+  progressText.style.display = "block";
 }
 
 // Usa el parámetro "test" de la URL para definir si es modo test o no
