@@ -4,7 +4,14 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 
+
+
 export default async function handler(req, res) {
+
+  console.log("Query params:", req.query);
+  console.log("CLIENT_ID:", CLIENT_ID);
+  console.log("CLIENT_SECRET:", CLIENT_SECRET ? "✅" : "❌");
+  console.log("REDIRECT_URI:", REDIRECT_URI);
   try {
     const { code, state } = req.query;
 
