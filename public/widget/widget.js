@@ -95,6 +95,7 @@ function mostrarSiguienteAnuncio() {
   const ad = anuncios[anuncioActual];
   anuncioIndice.textContent = anuncioActual + 1;
   anuncioTotal.textContent = anuncios.length;
+  timerText.innerHTML = `Anuncios: <span id="anuncio-indice">${anuncioActual + 1}</span> de <span id="anuncio-total">${anuncios.length}</span>`;
   infoDiv.style.display = "block";
 
   gsap.fromTo(infoDiv, 
