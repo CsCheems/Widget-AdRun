@@ -24,7 +24,7 @@ async function obtenerDatos(isTest = false) {
       data = {
         data: [
           { duration: 30, 
-            next_ad_at: new Date(Date.now() + 15000).toISOString() }
+            next_ad_at: new Date(Date.now() + 30000).toISOString() }
         ]
       };
     } else {
@@ -32,6 +32,7 @@ async function obtenerDatos(isTest = false) {
       data = await res.json();
     }
 
+    console.log(data.data);
     anuncios = data.data;
     totalDuracion = anuncios.reduce((acc, ad) => acc + ad.duration, 0);
     if (anuncios.length > 0 && anuncios[0].next_ad_at) {
