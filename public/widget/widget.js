@@ -22,9 +22,7 @@ async function obtenerDatos(isTest = false) {
     if (isTest) {
       data = {
         data: [
-          { duration: 30 },
-          { duration: 30 },
-          { duration: 30 },
+          { duration: 30, next_ad_at: new Date(Date.now() + 15000).toISOString() }
         ]
       };
     } else {
@@ -34,9 +32,19 @@ async function obtenerDatos(isTest = false) {
 
     anuncios = data.data;
     totalDuracion = anuncios.reduce((acc, ad) => acc + ad.duration, 0);
-    if (anuncios.length > 0) {
-      iniciarProgreso();
-      mostrarSiguienteAnuncio();
+    if (anuncios.length > 0 && anuncios[0].next_ad_at) {
+      const nextAdTime = new Date(anuncios[0].next_ad_at).getTime();
+      const now = Date.now();
+      const diff = nextAdTime - now;
+
+      if(diff > 10000){
+        setTimeout(() => iniciarCuentaRegresiva(10), diff - 10000);
+      }else if(diff > 0){
+        iniciarCuentaRegresiva(Math.floor(diff/1000));
+      }else{
+        iniciarProgreso();
+        mostrarSiguienteAnuncio();
+      }
     } else {
       anuncioIndice.textContent = "-";
       anuncioTotal.textContent = "-";
@@ -61,6 +69,22 @@ function iniciarProgreso() {
     scaleX: 0,
     ease: "linear"
   });
+}
+
+function iniciarCuentaRegresiva(segundos){
+  let contador = segundos;
+  infoDiv.style.display = "block";
+
+  const intervalo = setInterval(() => {
+    timerText.textContent = `Anuncios en ${contador}`;
+    contador--;
+
+    if(contador < 0){
+      clearInterval(intervalo);
+      iniciarProgreso();
+      mostrarSiguienteAnuncio();
+    }
+  }, 1000);
 }
 
 function mostrarSiguienteAnuncio() {

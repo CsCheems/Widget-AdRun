@@ -24,7 +24,7 @@ export default async function handler(req, res) {
         "Client-Id": CLIENT_ID
       }
     });
-
+    
     res.status(200).json(adsRes.data);
   } catch (err) {
     console.error(err.response?.data || err.message);

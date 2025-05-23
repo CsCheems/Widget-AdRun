@@ -29,7 +29,6 @@ body {
   -webkit-backdrop-filter: blur(6px);
 }
 
-/* Fondo animado detrás del texto */
 #progress-bar {
   position: absolute;
   top: 0;
@@ -41,7 +40,6 @@ body {
   transform-origin: left center;
 }
 
-/* Texto por delante */
 #timer-text {
   position: relative;
   z-index: 2;
