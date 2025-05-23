@@ -35,7 +35,7 @@ async function obtenerDatos(isTest = false) {
     anuncios = data.data;
     totalDuracion = anuncios.reduce((acc, ad) => acc + ad.duration, 0);
     if (anuncios.length > 0 && anuncios[0].next_ad_at) {
-      const nextAdTime = new Date(anuncios[0].next_ad_at).getTime();
+      const nextAdTime = new Date(anuncios[0].next_ad_at * 1000).getTime();
       const now = Date.now();
       const diff = nextAdTime - now;
 
