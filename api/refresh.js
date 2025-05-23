@@ -6,10 +6,11 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 if (!admin.apps.length) {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
+    const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
+    serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    });
 }
 
 const db = admin.firestore();

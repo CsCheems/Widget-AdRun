@@ -4,15 +4,12 @@ import { readFile } from "fs/promises";
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
-const FIREBASE_CREDENTIALS = process.env.FIREBASE_CREDENTIALS;
 
 import admin from "firebase-admin";
 
-const serviceAccount = JSON.parse(
-  await readFile(new URL(FIREBASE_CREDENTIALS, import.meta.url), "utf8")
-);
-
 if (!admin.apps.length) {
+  const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
@@ -57,7 +54,7 @@ export default async function handler(req, res) {
     const userRes = await axios.get("https://api.twitch.tv/helix/users",{
       headers: {
         Authorization: `Bearer ${access_token}`,
-        "Client_id": CLIENT_ID,
+        "Client-id": CLIENT_ID,
       },
     });
 
