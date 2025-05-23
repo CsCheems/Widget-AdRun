@@ -14,29 +14,36 @@ body {
 }
 
 #info {
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.75);
-  color: white;
+  position: relative;
+  display: none;
+  width: 240px;
+  height: 50px;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   text-align: center;
   font-weight: bold;
-  display: none;
-  width: 200px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* box shadow profesional */
+  color: white;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-#progress-container {
-  width: 100%;
-  height: 8px;
-  background-color: #333;
-  border-radius: 4px;
-  margin-top: 8px;
-  overflow: hidden;
-}
-
+/* Fondo animado detrás del texto */
 #progress-bar {
-  height: 100%;
-  background-color: #dab643;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #dab643, #bfa32a);
+  z-index: 1;
   transform-origin: left center;
+}
+
+/* Texto por delante */
+#timer-text {
+  position: relative;
+  z-index: 2;
+  line-height: 50px;
 }
