@@ -2,6 +2,8 @@ const params = new URLSearchParams(window.location.search);
 const token = params.get("token");
 const infoDiv = document.getElementById("info");
 const progressBar = document.getElementById("progress-bar");
+const anuncioIndice = document.getElementById("anuncio-indice");
+const anuncioTotal = document.getElementById("anuncio-total");
 
 let anuncios = [];
 let anuncioActual = 0;
@@ -9,7 +11,8 @@ let totalDuracion = 0;
 
 async function obtenerDatos(isTest = false) {
   if (!token) {
-    infoDiv.innerHTML = "Token no proporcionado.";
+    anuncioIndice.textContent = "-";
+    anuncioTotal.textContent = "-";
     infoDiv.style.display = "block";
     return;
   }
@@ -35,13 +38,15 @@ async function obtenerDatos(isTest = false) {
       iniciarProgreso();
       mostrarSiguienteAnuncio();
     } else {
-      infoDiv.innerHTML = "No hay anuncios.";
+      anuncioIndice.textContent = "-";
+      anuncioTotal.textContent = "-";
       infoDiv.style.display = "block";
     }
 
   } catch (err) {
     console.error(err);
-    infoDiv.innerHTML = "Error al obtener datos de Twitch.";
+    anuncioIndice.textContent = "-";
+    anuncioTotal.textContent = "-";
     infoDiv.style.display = "block";
   }
 }
@@ -62,11 +67,12 @@ function mostrarSiguienteAnuncio() {
   if (anuncioActual >= anuncios.length) return;
 
   const ad = anuncios[anuncioActual];
-  const texto = `Anuncios: ${anuncioActual + 1} de ${anuncios.length}`;
-  infoDiv.innerHTML = texto;
+  anuncioIndice.textContent = anuncioActual + 1;
+  anuncioTotal.textContent = anuncios.length;
+  infoDiv.style.display = "block";
 
   gsap.fromTo(infoDiv, 
-    { opacity: 0, display: "block" },
+    { opacity: 0 },
     { opacity: 1, duration: 0.5 }
   );
 
@@ -83,7 +89,5 @@ function mostrarSiguienteAnuncio() {
   }, ad.duration * 1000);
 }
 
-// Usa el parámetro "test" de la URL para definir si es modo test o no
 const isTest = params.get("test") === "true";
-
 obtenerDatos(isTest);
