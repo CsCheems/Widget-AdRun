@@ -4,6 +4,7 @@ const infoDiv = document.getElementById("info");
 const progressBar = document.getElementById("progress-bar");
 const anuncioIndice = document.getElementById("anuncio-indice");
 const anuncioTotal = document.getElementById("anuncio-total");
+const timerText = document.getElementById("timer-text");
 
 let anuncios = [];
 let anuncioActual = 0;
@@ -22,7 +23,8 @@ async function obtenerDatos(isTest = false) {
     if (isTest) {
       data = {
         data: [
-          { duration: 30, next_ad_at: new Date(Date.now() + 15000).toISOString() }
+          { duration: 30, 
+            next_ad_at: new Date(Date.now() + 15000).toISOString() }
         ]
       };
     } else {
