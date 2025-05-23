@@ -3,15 +3,23 @@ import axios from "axios";
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
+const FIREBASE_CREDENTIALS = process.env.FIREBASE_CREDENTIALS;
 
+import admin from "firebase-admin";
 
+const serviceAccount = JSON.parse(
+  await readFile(new URL(FIREBASE_CREDENTIALS, import.meta.url), "utf8")
+);
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+}
+
+const db = admin.firestore();
 
 export default async function handler(req, res) {
-
-  console.log("Query params:", req.query);
-  console.log("CLIENT_ID:", CLIENT_ID);
-  console.log("CLIENT_SECRET:", CLIENT_SECRET ? "✅" : "❌");
-  console.log("REDIRECT_URI:", REDIRECT_URI);
   try {
     const { code, state } = req.query;
 
@@ -43,10 +51,24 @@ export default async function handler(req, res) {
 
     console.log("Respuesta token:", tokenResponse.data);
 
-    const accessToken = tokenResponse.data.access_token;
+    const {access_token, refresh_token} = tokenResponse.data;
 
-    // Redirigir al widget con token
-    res.writeHead(302, { Location: `/widget/widget.html?token=${accessToken}` });
+    const userRes = await axios.get("https://api.twitch.tv/helix/users",{
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        "Client_id": CLIENT_ID,
+      },
+    });
+
+    const user = userRes.data.data[0];
+
+    await db.collection("tokens").doc(user.login).set({
+      access_token,
+      refresh_token,
+      updated_at: admin.firestore.FieldValue.serverTimestamp()
+    });
+
+    res.writeHead(302, { Location: `/widget/widget.html?token=${access_token}` });
     res.end();
 
   } catch (error) {
