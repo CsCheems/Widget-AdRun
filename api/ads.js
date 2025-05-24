@@ -23,6 +23,8 @@ async function getAccessToken(broadcaster_id) {
 export default async function handler(req, res) {
   let access_token = req.query.access_token;
 
+  console.log("TOKEN: ",access_token);
+
   if (!access_token) {
     return res.status(400).send("Falta access_token o user");
   }
