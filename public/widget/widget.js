@@ -100,8 +100,6 @@ function iniciarCuentaRegresiva(segundos){
 function mostrarSiguienteAnuncio() {
   //si anuncio es 3 >= 3 termina
   if (anuncioActual >= anuncios.length) {
-    setTimeout(() => {console.log("Reseteando Widget");}, "5000");
-    obtenerDatos(isTest);
     return;
   }
 
