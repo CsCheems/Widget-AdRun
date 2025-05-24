@@ -46,7 +46,10 @@ async function obtenerDatos(isTest = false) {
       console.log(lastAdAt);
       const now = new Date(Date.now()).getTime();
       console.log(now);
-      const diff = nextAdTime - now;
+
+      const diff = -(nextAdTime - now);
+
+  
 
       console.log(diff);
 
