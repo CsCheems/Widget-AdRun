@@ -13,52 +13,49 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-async function getAccessToken(broadcaster_id) {
-  const res = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { broadcaster_id });
-  console.log(res);
-  return res.data.access_token;
-  
-}
-
 export default async function handler(req, res) {
-  let access_token = req.query.access_token;
+  const { user } = req.query;
 
-  console.log("TOKEN: ",access_token);
-
-  if (!access_token) {
-    return res.status(400).send("Falta access_token o user");
-  }
+  if (!user) return res.status(400).send("Falta usuario");
 
   try {
-    const userRes = await axios.get("https://api.twitch.tv/helix/users", {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        "Client-Id": CLIENT_ID,
-      },
-    });
+    const docRef = await db.collection("tokens").doc(user).get();
 
-    const broadcaster_id = userRes.data.data[0].id;
+    if (!docRef.exists) {
+      return res.status(404).send("Usuario no encontrado");
+    }
 
-    const adsRes = await axios.get(`https://api.twitch.tv/helix/channels/ads?broadcaster_id=${broadcaster_id}`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        "Client-Id": CLIENT_ID,
-      },
-    });
+    let { access_token, refresh_token } = docRef.data();
 
-    res.status(200).json(adsRes.data);
-  } catch (err) {
-    if (err.response?.status === 401) {
-      try {
-        // Token expirado, intenta refrescarlo
+    try {
+      const userRes = await axios.get("https://api.twitch.tv/helix/users", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Client-Id": CLIENT_ID,
+        },
+      });
+
+      const broadcaster_id = userRes.data.data[0].id;
+
+      const adsRes = await axios.get(`https://api.twitch.tv/helix/channels/ads?broadcaster_id=${broadcaster_id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Client-Id": CLIENT_ID,
+        },
+      });
+
+      return res.status(200).json(adsRes.data);
+    } catch (err) {
+      if (err.response?.status === 401) {
         console.log("Token expirado. Intentando refrescar...");
 
-        const newAccessToken = await getAccessToken(broadcaster_id);
+        const refreshRes = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { user });
 
-        // Reintenta con el nuevo token
+        access_token = refreshRes.data.access_token;
+
         const userRes = await axios.get("https://api.twitch.tv/helix/users", {
           headers: {
-            Authorization: `Bearer ${newAccessToken}`,
+            Authorization: `Bearer ${access_token}`,
             "Client-Id": CLIENT_ID,
           },
         });
@@ -67,19 +64,19 @@ export default async function handler(req, res) {
 
         const adsRes = await axios.get(`https://api.twitch.tv/helix/channels/ads?broadcaster_id=${broadcaster_id}`, {
           headers: {
-            Authorization: `Bearer ${newAccessToken}`,
+            Authorization: `Bearer ${access_token}`,
             "Client-Id": CLIENT_ID,
           },
         });
 
         return res.status(200).json(adsRes.data);
-      } catch (refreshError) {
-        console.error("Error al refrescar token:", refreshError.response?.data || refreshError.message);
-        return res.status(401).send("Token expirado y no se pudo refrescar");
       }
-    }
 
-    console.error(err.response?.data || err.message);
+      throw err;
+    }
+  } catch (error) {
+    console.error("Error en /api/ads:", error.response?.data || error.message);
     return res.status(500).send("Error al obtener anuncios");
   }
 }
+

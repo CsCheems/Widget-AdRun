@@ -1,5 +1,5 @@
 const params = new URLSearchParams(window.location.search);
-const token = params.get("token");
+const user = params.get("user");
 const infoDiv = document.getElementById("info");
 const progressBar = document.getElementById("progress-bar");
 const anuncioIndice = document.getElementById("anuncio-indice");
@@ -12,9 +12,9 @@ let totalDuracion = 0;
 
 async function obtenerDatos(isTest = false) {
 
-  console.log(token);
+  console.log(user);
 
-  if (!token) {
+  if (!user) {
     anuncioIndice.textContent = "-";
     anuncioTotal.textContent = "-";
     infoDiv.style.display = "block";
@@ -37,7 +37,7 @@ async function obtenerDatos(isTest = false) {
         ]
       };
     } else {
-      const res = await fetch(`/api/ads?access_token=${token}`);
+      const res = await fetch(`/api/ads?user=${user}`);
       console.log(res);
       data = await res.json();
     }
