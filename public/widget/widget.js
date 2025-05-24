@@ -11,7 +11,6 @@ let anuncioActual = 0;
 let totalDuracion = 0;
 
 async function obtenerDatos(isTest = false) {
-  console.log("ADDDDDS!!!!!");
   if (!token) {
     anuncioIndice.textContent = "-";
     anuncioTotal.textContent = "-";
@@ -119,7 +118,7 @@ function mostrarSiguienteAnuncio() {
       setTimeout(() => {
         anuncioActual = 0;
         obtenerDatos(isTest);
-      }, 60 * 1000); // espera 1 minuto antes de volver a consultar
+      }, 60 * 1000);
       return;
   }
 
