@@ -3,6 +3,6 @@
     { "source": "/auth", "destination": "/api/auth" },
     { "source": "/callback", "destination": "/api/callback" },
     { "source": "/refresh", "destination": "/api/refresh" },
-    { "source": "/api/ads", "destination": "/api/ads" }
+    { "source": "/ads", "destination": "/api/ads" }
   ]
 }
