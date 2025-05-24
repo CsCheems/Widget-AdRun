@@ -35,10 +35,14 @@ async function obtenerDatos(isTest = false) {
     console.log(data.data);
     anuncios = data.data;
     totalDuracion = anuncios.reduce((acc, ad) => acc + ad.duration, 0);
+    console.log(totalDuracion);
     if (anuncios.length > 0 && anuncios[0].next_ad_at) {
       const nextAdTime = new Date(anuncios[0].next_ad_at).getTime();
+      console.log(nextAdTime);
       const now = Date.now();
+      console.log(now);
       const diff = nextAdTime - now;
+      console.log(diff);
 
       if(diff > 10000){
         setTimeout(() => iniciarCuentaRegresiva(10), diff - 10000);
@@ -93,7 +97,12 @@ function iniciarCuentaRegresiva(segundos){
 }
 
 function mostrarSiguienteAnuncio() {
-  if (anuncioActual >= anuncios.length) return;
+  //si anuncio es 3 >= 3 termina
+  if (anuncioActual >= anuncios.length) {
+    setTimeout(() => {console.log("Reseteando Widget");}, "5000");
+    obtenerDatos(isTest);
+    return;
+  }
 
   const ad = anuncios[anuncioActual];
   anuncioIndice.textContent = anuncioActual + 1;
