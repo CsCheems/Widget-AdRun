@@ -86,8 +86,9 @@ async function obtenerDatos(isTest = false) {
 
 function iniciarProgreso() {
   gsap.killTweensOf(progressBar);
-  progressBar.style.transform = "scaleX(1)";
+  
   progressBar.style.display = "block";
+  gsap.set(progressBar, {scaleX: 1});
 
   gsap.to(progressBar, {
     duration: totalDuracion,
