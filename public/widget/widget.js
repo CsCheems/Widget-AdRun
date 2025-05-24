@@ -37,16 +37,27 @@ async function obtenerDatos(isTest = false) {
     anuncios = data.data;
     totalDuracion = anuncios.reduce((acc, ad) => acc + ad.duration, 0);
     console.log(totalDuracion);
+    console.log(anuncios.length);
+    console.log(anuncios[0].next_ad_at);
     if (anuncios.length > 0 && anuncios[0].next_ad_at) {
-      const nextAdTime = new Date(anuncios[0].next_ad_at).getTime();
+      const nextAdTime = anuncios[0].next_ad_at;
       console.log(nextAdTime);
-      const now = Date.now();
-      console.log(now);
-      const diff = now - nextAdTime;
+      const lastAdAt = anuncios[0].last_ad_at;
+      console.log(lastAdAt);
+      const diff = nextAdTime - lastAdAt;
       console.log(diff);
 
+      console.log(diff*1000);
+
+      // const nextAdTime = new Date(anuncios[0].next_ad_at).getTime();
+      // console.log(nextAdTime);
+      // const now = new Date(Date.now()).getTime();
+      // console.log(now);
+      // const diff = now - nextAdTime;
+      // console.log(diff);
+
       if(diff > 10000){
-        setTimeout(() => iniciarCuentaRegresiva(10), diff - 10000);
+        setTimeout(() => iniciarCuentaRegresiva(10), diff * 1000);
       }else if(diff > 0){
         iniciarCuentaRegresiva(Math.floor(diff/1000));
       }else{
