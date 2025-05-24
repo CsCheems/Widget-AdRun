@@ -48,11 +48,10 @@ async function obtenerDatos(isTest = false) {
       console.log(now);
       const diff = nextAdTime - now;
 
-      const diffCalculado = Math.floor(diff/1000);
-      console.log(diffCalculado);
+      console.log(diff);
 
-      if(diffCalculado > 10000){
-        setTimeout(() => iniciarCuentaRegresiva(10), diffCalculado);
+      if(diff > 10000){
+        setTimeout(() => iniciarCuentaRegresiva(10), diff);
       }else if(diff > 0){
         iniciarCuentaRegresiva(Math.floor(diff/1000));
       }else{
