@@ -24,7 +24,7 @@ async function obtenerDatos(isTest = false) {
       data = {
         data: [
           { duration: 30, 
-            next_ad_at: new Date(Date.now() + 30000) }
+            next_ad_at: Date.now() + 30000 }
         ]
       };
     } else {
