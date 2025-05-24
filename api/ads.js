@@ -14,9 +14,10 @@ if (!admin.apps.length) {
 const db = admin.firestore();
 
 async function getAccessToken(user) {
-  // Llama a tu propio endpoint de refresh
   const res = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { user });
+  console.log(res);
   return res.data.access_token;
+  
 }
 
 export default async function handler(req, res) {
