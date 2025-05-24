@@ -60,7 +60,8 @@ export default async function handler(req, res) {
 
     const user = userRes.data.data[0];
 
-    await db.collection("tokens").doc(user.login).set({
+    await db.collection("tokens").doc(user.id).set({
+      login: user.login,
       access_token,
       refresh_token,
       updated_at: admin.firestore.FieldValue.serverTimestamp()

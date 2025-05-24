@@ -13,8 +13,8 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-async function getAccessToken(user) {
-  const res = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { user });
+async function getAccessToken(broadcaster_id) {
+  const res = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { broadcaster_id });
   console.log(res);
   return res.data.access_token;
   
@@ -22,9 +22,8 @@ async function getAccessToken(user) {
 
 export default async function handler(req, res) {
   let access_token = req.query.access_token;
-  const user = req.query.user;
 
-  if (!access_token || !user) {
+  if (!access_token) {
     return res.status(400).send("Falta access_token o user");
   }
 
@@ -52,7 +51,7 @@ export default async function handler(req, res) {
         // Token expirado, intenta refrescarlo
         console.log("Token expirado. Intentando refrescar...");
 
-        const newAccessToken = await getAccessToken(user);
+        const newAccessToken = await getAccessToken(broadcaster_id);
 
         // Reintenta con el nuevo token
         const userRes = await axios.get("https://api.twitch.tv/helix/users", {

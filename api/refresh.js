@@ -20,12 +20,12 @@ export default async function handler(req, res) {
     return res.status(405).send("Método no permitido");
   }
 
-  const { user } = req.body;
+  const { broadcaster_id } = req.body;
 
-  if (!user) return res.status(400).send("Usuario requerido");
+  if (!broadcaster_id) return res.status(400).send("Id usuario requerido");
 
   try {
-    const doc = await db.collection("tokens").doc(user).get();
+    const doc = await db.collection("tokens").doc(broadcaster_id).get();
     if (!doc.exists) {
       return res.status(404).send("Usuario no encontrado");
     }
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
     const { access_token, refresh_token: new_refresh_token } = response.data;
 
-    await db.collection("tokens").doc(user).update({
+    await db.collection("tokens").doc(broadcaster_id).update({
       access_token,
       refresh_token: new_refresh_token,
       updated_at: admin.firestore.FieldValue.serverTimestamp(),
