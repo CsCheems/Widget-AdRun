@@ -42,7 +42,7 @@ async function obtenerDatos(isTest = false) {
       console.log(nextAdTime);
       const now = Date.now();
       console.log(now);
-      const diff = nextAdTime - now;
+      const diff = now - nextAdTime;
       console.log(diff);
 
       if(diff > 10000){
