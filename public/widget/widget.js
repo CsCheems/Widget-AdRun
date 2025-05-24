@@ -37,7 +37,7 @@ async function obtenerDatos(isTest = false) {
         ]
       };
     } else {
-      const res = await fetch(`/ads?access_token=${token}`);
+      const res = await fetch(`/api/ads?access_token=${token}`);
       console.log(res);
       data = await res.json();
     }
