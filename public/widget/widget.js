@@ -11,6 +11,7 @@ let anuncioActual = 0;
 let totalDuracion = 0;
 
 async function obtenerDatos(isTest = false) {
+  console.log("ADDDDDS!!!!!");
   if (!token) {
     anuncioIndice.textContent = "-";
     anuncioTotal.textContent = "-";
