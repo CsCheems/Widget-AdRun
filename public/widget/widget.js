@@ -113,8 +113,13 @@ function iniciarCuentaRegresiva(segundos){
 
 function mostrarSiguienteAnuncio() {
   //si anuncio es 3 >= 3 termina
-  if (anuncioActual >= anuncios.length) {
-    return;
+    if (anuncioActual >= anuncios.length) {
+      console.log("Todos los anuncios mostrados. Esperando para volver a verificar...");
+      setTimeout(() => {
+        anuncioActual = 0;
+        obtenerDatos(isTest);
+      }, 60 * 1000); // espera 1 minuto antes de volver a consultar
+      return;
   }
 
   const ad = anuncios[anuncioActual];
