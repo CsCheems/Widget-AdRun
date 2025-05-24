@@ -44,10 +44,15 @@ async function obtenerDatos(isTest = false) {
       console.log(nextAdTime);
       const lastAdAt = anuncios[0].last_ad_at;
       console.log(lastAdAt);
-      const diff = nextAdTime - lastAdAt;
+      //const diff = nextAdTime - lastAdAt;
+      const now = new Date(Date.now()).getTime();
+      const diff = now - nextAdTime;
       console.log(diff);
+      console.log(diff/1000);
 
-      console.log(diff*1000);
+      // const diffx1000 = diff * 1000;
+      // console.log(diffx1000);
+      // console.log(diff);
 
       // const nextAdTime = new Date(anuncios[0].next_ad_at).getTime();
       // console.log(nextAdTime);
@@ -57,7 +62,7 @@ async function obtenerDatos(isTest = false) {
       // console.log(diff);
 
       if(diff > 10000){
-        setTimeout(() => iniciarCuentaRegresiva(10), diff * 1000);
+        setTimeout(() => iniciarCuentaRegresiva(10), diff/1000);
       }else if(diff > 0){
         iniciarCuentaRegresiva(Math.floor(diff/1000));
       }else{
