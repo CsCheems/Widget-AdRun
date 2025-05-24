@@ -24,8 +24,14 @@ async function obtenerDatos(isTest = false) {
     if (isTest) {
       data = {
         data: [
-          { duration: 30, 
-            next_ad_at: Date.now() + 30000 }
+          {
+            snooze_count: 0,
+            snooze_refresh_at: 0,
+            next_ad_at: 1748069640,
+            duration: 60,
+            last_ad_at: 1748069280,
+            preroll_free_time: 0
+          }
         ]
       };
     } else {
