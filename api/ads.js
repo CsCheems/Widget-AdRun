@@ -2,6 +2,7 @@ import axios from "axios";
 import admin from "firebase-admin";
 
 const CLIENT_ID = process.env.CLIENT_ID;
+const BASE_URL = process.env.BASE_URL;
 
 if (!admin.apps.length) {
   const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
@@ -55,7 +56,7 @@ export default async function handler(req, res) {
         console.log("Token expirado. Intentando refrescar...");
 
         try {
-          const refreshRes = await axios.post(`${process.env.REDIRECT_URI}/refresh`, { user });
+          const refreshRes = await axios.post(`${process.env.BASE_URL}/refresh`, { user });
           access_token = refreshRes.data.access_token;
 
           console.log("Nuevo token:", access_token);
