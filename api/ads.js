@@ -14,6 +14,7 @@ if (!admin.apps.length) {
 const db = admin.firestore();
 
 export default async function handler(req, res) {
+
   const { user } = req.query;
 
   console.log(user);
@@ -56,6 +57,8 @@ export default async function handler(req, res) {
         const refreshRes = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { user });
 
         access_token = refreshRes.data.access_token;
+
+        console.log(access_token);
 
         const userRes = await axios.get("https://api.twitch.tv/helix/users", {
           headers: {
