@@ -31,7 +31,7 @@ async function obtenerDatos(isTest = false) {
             snooze_refresh_at: 0,
             next_ad_at: 1748136775,
             duration: 120,
-            last_ad_at: 1748133224,
+            last_ad_at: 1758811930,
             preroll_free_time: 0
           }
         ]
