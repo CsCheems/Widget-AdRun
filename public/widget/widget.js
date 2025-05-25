@@ -35,8 +35,8 @@ async function obtenerDatos(isTest = false) {
       };
     } else {
       const res = await fetch(`/api/ads?user=${user}`);
-      console.log(res);
       data = await res.json();
+      console.log(data);
     }
     anuncios = data.data;
     totalDuracion = anuncios.reduce((acc, ad) => acc + ad.duration, 0);
