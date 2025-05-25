@@ -27,6 +27,8 @@ export default async function handler(req, res) {
 
     let { access_token, refresh_token } = docRef.data();
 
+    console.log(access_token, refresh_token);
+
     try {
       const userRes = await axios.get("https://api.twitch.tv/helix/users", {
         headers: {
