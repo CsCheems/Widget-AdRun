@@ -54,11 +54,15 @@ export default async function handler(req, res) {
       if (err.response?.status === 401) {
         console.log("Token expirado. Intentando refrescar...");
 
-        const refreshRes = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { user });
+        try {
+          const refreshRes = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { user });
+          access_token = refreshRes.data.access_token;
 
-        access_token = refreshRes.data.access_token;
-
-        console.log(access_token);
+          console.log("Nuevo token:", access_token);
+        } catch (refreshError) {
+          console.error("Error al refrescar token:", refreshError.response?.data || refreshError.message);
+          return res.status(500).send("Error al refrescar token");
+        }
 
         const userRes = await axios.get("https://api.twitch.tv/helix/users", {
           headers: {
