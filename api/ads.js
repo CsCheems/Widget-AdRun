@@ -55,7 +55,7 @@ export default async function handler(req, res) {
         console.log("Token expirado. Intentando refrescar...");
 
         try {
-          const refreshRes = await axios.post(`${process.env.REDIRECT_URI}/api/refresh`, { user });
+          const refreshRes = await axios.post(`${process.env.REDIRECT_URI}/refresh`, { user });
           access_token = refreshRes.data.access_token;
 
           console.log("Nuevo token:", access_token);
