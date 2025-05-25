@@ -61,7 +61,7 @@ async function obtenerDatos(isTest = false) {
         iniciarCuentaRegresiva(Math.floor(diff/1000));
       }else{
         iniciarProgreso();
-        mostrarSiguienteAnuncio(totalDuracion);
+        anuncioDuracion(totalDuracion);
       }
     } else {
       anuncioIndice.textContent = "-";
