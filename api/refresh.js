@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
     const { access_token, refresh_token: new_refresh_token } = response.data;
 
-    await db.collection("tokens").doc(broadcaster_id).update({
+    await db.collection("tokens").doc(user).update({
       access_token,
       refresh_token: new_refresh_token,
       updated_at: admin.firestore.FieldValue.serverTimestamp(),
