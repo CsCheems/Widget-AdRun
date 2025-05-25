@@ -16,6 +16,8 @@ const db = admin.firestore();
 export default async function handler(req, res) {
   const { user } = req.query;
 
+  console.log(user);
+
   if (!user) return res.status(400).send("Falta usuario");
 
   try {
