@@ -29,9 +29,9 @@ async function obtenerDatos(isTest = false) {
           {
             snooze_count: 0,
             snooze_refresh_at: 0,
-            next_ad_at: 1748069880,
-            duration: 60,
-            last_ad_at: 1748069280,
+            next_ad_at: 1748136775,
+            duration: 120,
+            last_ad_at: 1748133224,
             preroll_free_time: 0
           }
         ]
@@ -41,23 +41,16 @@ async function obtenerDatos(isTest = false) {
       console.log(res);
       data = await res.json();
     }
-
-    console.log(data.data);
     anuncios = data.data;
     totalDuracion = anuncios.reduce((acc, ad) => acc + ad.duration, 0);
-    console.log(totalDuracion);
-    console.log(anuncios.length);
-    console.log(anuncios[0].next_ad_at);
+
     if (anuncios.length > 0 && anuncios[0].next_ad_at) {
       const nextAdTime = anuncios[0].next_ad_at * 1000;
       console.log(nextAdTime);
       const lastAdAt = anuncios[0].last_ad_at * 1000;
       console.log(lastAdAt);
       const now = Date.now();
-      console.log(now);
       const diff = nextAdTime - now;
-      console.log(diff);
-
       console.log("Next ad at:", new Date(nextAdTime).toLocaleTimeString());
       console.log("Now:", new Date(now).toLocaleTimeString());
       console.log("Diff (ms):", diff);
@@ -68,7 +61,7 @@ async function obtenerDatos(isTest = false) {
         iniciarCuentaRegresiva(Math.floor(diff/1000));
       }else{
         iniciarProgreso();
-        mostrarSiguienteAnuncio();
+        mostrarSiguienteAnuncio(totalDuracion);
       }
     } else {
       anuncioIndice.textContent = "-";
@@ -89,7 +82,6 @@ function iniciarProgreso() {
   
   progressBar.style.display = "block";
   gsap.set(progressBar, {scaleX: 1});
-
   gsap.to(progressBar, {
     duration: totalDuracion,
     scaleX: 0,
@@ -97,11 +89,13 @@ function iniciarProgreso() {
   });
 }
 
-//
-
 function iniciarCuentaRegresiva(segundos){
   let contador = segundos;
   infoDiv.style.display = "block";
+   gsap.fromTo(infoDiv,
+    { opacity: 0 },
+    { opacity: 1, duration: 0.5 }
+  );
 
   const intervalo = setInterval(() => {
     timerText.textContent = `Anuncios en ${contador}`;
@@ -110,44 +104,39 @@ function iniciarCuentaRegresiva(segundos){
     if(contador < 0){
       clearInterval(intervalo);
       iniciarProgreso();
-      mostrarSiguienteAnuncio();
+      anuncioDuracion(totalDuracion);
     }
   }, 1000);
 }
 
-function mostrarSiguienteAnuncio() {
-  //si anuncio es 3 >= 3 termina
-    if (anuncioActual >= anuncios.length) {
-      console.log("Todos los anuncios mostrados. Esperando para volver a verificar...");
-      setTimeout(() => {
-        anuncioActual = 0;
-        obtenerDatos(isTest);
-      }, 60 * 1000);
-      return;
-  }
-
-  const ad = anuncios[anuncioActual];
-  anuncioIndice.textContent = anuncioActual + 1;
-  anuncioTotal.textContent = anuncios.length;
-  timerText.innerHTML = `Anuncios: <span id="anuncio-indice">${anuncioActual + 1}</span> de <span id="anuncio-total">${anuncios.length}</span>`;
+function anuncioDuracion(totalDuracion) {
+  let duracion = totalDuracion;
   infoDiv.style.display = "block";
 
-  gsap.fromTo(infoDiv, 
+  const intervalo = setInterval(() => {
+    let minutos = Math.floor((duracion%3600)/60);
+    let segundos = duracion % 60;
+
+    minutos = minutos < 10 ? "0" + minutos : minutos;
+    segundos = segundos < 10 ? "0" + segundos : segundos;
+
+    timerText.textContent = `Anuncios • ${minutos}:${segundos}`;
+    duracion--;
+
+    if(duracion < 0){
+      clearInterval(intervalo);
+      infoDiv.style.display = "none";
+      setTimeout(() =>{
+        console.log("Reseteando...");
+        obtenerDatos(isTest);
+      }, 60*1000);
+    }
+  }, 1000);
+
+  gsap.fromTo(infoDiv,
     { opacity: 0 },
     { opacity: 1, duration: 0.5 }
   );
-
-  setTimeout(() => {
-    gsap.to(infoDiv, {
-      opacity: 0,
-      duration: 0.5,
-      onComplete: () => {
-        infoDiv.style.display = "none";
-        anuncioActual++;
-        mostrarSiguienteAnuncio();
-      }
-    });
-  }, ad.duration * 1000);
 }
 
 const isTest = params.get("test") === "true";
