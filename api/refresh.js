@@ -20,12 +20,12 @@ export default async function handler(req, res) {
     return res.status(405).send("Método no permitido");
   }
 
-  const { broadcaster_id } = req.body;
+  const { user } = req.body;
 
-  if (!broadcaster_id) return res.status(400).send("Id usuario requerido");
+  if (!user) return res.status(400).send("Id usuario requerido");
 
   try {
-    const doc = await db.collection("tokens").doc(broadcaster_id).get();
+    const doc = await db.collection("tokens").doc(user).get();
     if (!doc.exists) {
       return res.status(404).send("Usuario no encontrado");
     }
