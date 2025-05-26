@@ -26,7 +26,7 @@ async function obtenerDatos(isTest = false) {
           {
             snooze_count: 0,
             snooze_refresh_at: 0,
-            next_ad_at: new Date(Date.now() + 30000),
+            next_ad_at: new Date(Date.now() + 30),
             duration: 120,
             preroll_free_time: 0
           }
