@@ -82,6 +82,9 @@ function iniciarProgreso() {
 }
 
 function iniciarCuentaRegresiva(segundos){
+  gsap.killTweensOf(progressBar);
+  progressBar.style.display = "block";
+  gsap.set(progressBar, {scaleX: 1});
   let contador = segundos;
   infoDiv.style.display = "block";
    gsap.fromTo(infoDiv,
