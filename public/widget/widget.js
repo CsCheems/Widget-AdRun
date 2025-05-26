@@ -84,11 +84,13 @@ function iniciarProgreso() {
 function iniciarCuentaRegresiva(segundos){
   gsap.killTweensOf(progressBar);
   progressBar.style.display = "block";
-  gsap.set(progressBar, {scaleX: 1});
+  gsap.set(progressBar, { scaleX: 1 });
+
   let contador = segundos;
   timerText.textContent = `Anuncios en ${contador}`;
   infoDiv.style.display = "block";
-   gsap.fromTo(infoDiv,
+
+  gsap.fromTo(infoDiv,
     { opacity: 0 },
     { opacity: 1, duration: 0.7 }
   );
@@ -96,7 +98,8 @@ function iniciarCuentaRegresiva(segundos){
   const intervalo = setInterval(() => {
     timerText.textContent = `Anuncios en ${contador}`;
     contador--;
-    if(contador < 0){
+
+    if (contador < 0) {
       clearInterval(intervalo);
       iniciarProgreso();
       anuncioDuracion(totalDuracion);
