@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   if (!user) return res.status(400).send("Falta usuario");
 
   try {
-    const docRef = await db.collection("tokens").doc(user).get();
+    const docRef = await db.collection("adWidget").doc(user).get();
 
     if (!docRef.exists) {
       return res.status(404).send("Usuario no encontrado");

@@ -53,9 +53,7 @@ async function obtenerDatos(isTest = false) {
       console.log("Diff (ms):", diff);
 
       if(diff > 10000){
-        setTimeout(() => iniciarCuentaRegresiva(10), diff - 10000);
-      }else if(diff > 0){
-        iniciarCuentaRegresiva(Math.floor(diff/1000));
+        setTimeout(() => iniciarCuentaRegresiva(10), diff + 50000);
       }else{
         iniciarProgreso();
         anuncioDuracion(totalDuracion);
