@@ -26,7 +26,7 @@ async function obtenerDatos(isTest = false) {
           {
             snooze_count: 0,
             snooze_refresh_at: 0,
-            next_ad_at: new Date(Date.now() + 30),
+            next_ad_at: new Date(Date.now() + 30).toLocaleDateString(),
             duration: 120,
             preroll_free_time: 0
           }
@@ -43,8 +43,6 @@ async function obtenerDatos(isTest = false) {
     if (anuncios.length > 0 && anuncios[0].next_ad_at) {
       const nextAdTime = anuncios[0].next_ad_at * 1000;
       console.log(nextAdTime);
-      const lastAdAt = anuncios[0].last_ad_at * 1000;
-      console.log(lastAdAt);
       const now = Date.now();
       const diff = nextAdTime - now;
       console.log("Next ad at:", new Date(nextAdTime).toLocaleTimeString());
