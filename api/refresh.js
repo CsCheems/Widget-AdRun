@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   if (!user) return res.status(400).send("Id usuario requerido");
 
   try {
-    const doc = await db.collection("adWidget").doc(user).get();
+    const doc = await db.collection("tokens").doc(user).get();
     if (!doc.exists) {
       return res.status(404).send("Usuario no encontrado");
     }
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
     const { access_token, refresh_token: new_refresh_token } = response.data;
 
-    await db.collection("adWidget").doc(user).update({
+    await db.collection("tokens").doc(user).update({
       access_token,
       refresh_token: new_refresh_token,
       updated_at: admin.firestore.FieldValue.serverTimestamp(),
