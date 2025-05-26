@@ -86,16 +86,16 @@ function iniciarCuentaRegresiva(segundos){
   progressBar.style.display = "block";
   gsap.set(progressBar, {scaleX: 1});
   let contador = segundos;
+  timerText.textContent = `Anuncios en ${contador}`;
   infoDiv.style.display = "block";
    gsap.fromTo(infoDiv,
     { opacity: 0 },
-    { opacity: 1, duration: 0.5 }
+    { opacity: 1, duration: 0.7 }
   );
 
   const intervalo = setInterval(() => {
     timerText.textContent = `Anuncios en ${contador}`;
     contador--;
-
     if(contador < 0){
       clearInterval(intervalo);
       iniciarProgreso();
@@ -118,20 +118,18 @@ function anuncioDuracion(totalDuracion) {
     timerText.textContent = `Anuncios • ${minutos}:${segundos}`;
     duracion--;
 
-    if(duracion < 0){
+    if(duracion < 1){
       clearInterval(intervalo);
-      infoDiv.style.display = "none";
+      gsap.fromTo(infoDiv,
+        { opacity: 1 },
+        { opacity: 0, duration: 1 }
+      );
       setTimeout(() =>{
         console.log("Reseteando...");
         obtenerDatos(isTest);
       }, 60*1000);
     }
   }, 1000);
-
-  gsap.fromTo(infoDiv,
-    { opacity: 0 },
-    { opacity: 1, duration: 0.5 }
-  );
 }
 
 const isTest = params.get("test") === "true";
