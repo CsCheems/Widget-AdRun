@@ -48,9 +48,9 @@ async function obtenerDatos(isTest = false) {
       console.log("Next ad at:", new Date(nextAdTime).toLocaleTimeString());
       console.log("Now:", new Date(now).toLocaleTimeString());
       console.log("Diff (ms):", diff);
-
+      //ESTA CUENTA ES UN APROXIMADO YA QUE ENTRE CADA USUARIO VARIA ENTRE 45s Y 55s
       if(diff > 10000){
-        setTimeout(() => iniciarCuentaRegresiva(10), diff + 50000);
+        setTimeout(() => iniciarCuentaRegresiva(10), diff + 45000);
       }else{
         iniciarProgreso();
         anuncioDuracion(totalDuracion);
