@@ -26,8 +26,8 @@ async function obtenerDatos(isTest = false) {
           {
             snooze_count: 0,
             snooze_refresh_at: 0,
-            next_ad_at: Date.now() + 30000,
-            duration: 120,
+            next_ad_at: Date.now() + 10000,
+            duration: 90,
             preroll_free_time: 0
           }
         ]
@@ -50,7 +50,7 @@ async function obtenerDatos(isTest = false) {
       console.log("Diff (ms):", diff);
       //ESTA CUENTA ES UN APROXIMADO YA QUE ENTRE CADA USUARIO VARIA ENTRE 45s Y 55s
       if(diff > 10000){
-        setTimeout(() => iniciarCuentaRegresiva(10), diff + 45000);
+        setTimeout(() => iniciarCuentaRegresiva(10), diff + 52000);
       }else{
         iniciarProgreso();
         anuncioDuracion(totalDuracion);
@@ -99,7 +99,7 @@ function iniciarCuentaRegresiva(segundos){
     timerText.textContent = `Anuncios en ${contador}`;
     contador--;
 
-    if (contador < 0) {
+    if (contador <= 0) {
       clearInterval(intervalo);
       iniciarProgreso();
       anuncioDuracion(totalDuracion);
